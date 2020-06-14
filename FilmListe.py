@@ -1,8 +1,10 @@
 import os
 from datetime import datetime as DateTime
 
-# Pfad zu den Filmen
+# Pfad, Dateiname usw. zu den Filmen
 FilmPfad = "/Volumes/osx home/kodi2020"
+Dateiname = "000_FilmListe2020.txt"
+
 
 # Liste aller Unterverzeichnissen erstellen
 FilmListe = os.listdir(FilmPfad)
@@ -13,26 +15,42 @@ FilmListe.remove(".DS_Store")
 
 # FilmListe.sort()
 
-# Listen Kopf schreiben
-print ("Anzahl Filme: " + str(len(FilmListe)))
-print ("Uhrzeit: " + DateTime.now().strftime('%H:%M:%S'))
-print ("-------------------------------")
+with open('filmliste2020.txt', 'w') as datei:
+    # datei = open(Dateiname, 'w')
 
-# alle Filme in der Liste zeilenweise ausgeben
-i = 1
-erstesZeichenAlt = ""
+    # Listen Kopf schreiben
+    # print ("Anzahl Filme: " + str(len(FilmListe)))
+    # print ("Uhrzeit: " + DateTime.now().strftime('%H:%M:%S'))
+    # print ("-------------------------------")
+    datei.write("Anzahl Filme: " + str(len(FilmListe)))
+    datei.write("\rUhrzeit: " + DateTime.now().strftime('%H:%M:%S'))
+    datei.write("\r-------------------------------")
 
-for FilmName in FilmListe:
-    erstesZeichen = FilmName[0]
-    if erstesZeichen == erstesZeichenAlt:
-        print (str(i) + ": " + FilmName)
-    else:
-        print("")
-        print ("--- " + erstesZeichen + " ---")
-        print (str(i) + ": " + FilmName)
-    erstesZeichenAlt = erstesZeichen
-    i = i + 1
+    # alle Filme in der Liste zeilenweise ausgeben
+    i = 1
+    erstesZeichenAlt = ""
 
-print ("")
-print ("--------------------------------------")
-print ("End of FilmListe")
+    for FilmName in FilmListe:
+        erstesZeichen = FilmName[0]
+        if erstesZeichen == erstesZeichenAlt:
+            # print (str(i) + ": " + FilmName)
+            datei.write("\r" + str(i) + ": " + FilmName)
+        else:
+            # print("")
+            # print ("---" + erstesZeichen + " ---")
+            # print (str(i) + ": " + FilmName)
+            datei.write("\r" + "")
+            datei.write("\r---< " + erstesZeichen + " >---")
+            datei.write("\r" + str(i) + ": " + FilmName)
+        erstesZeichenAlt = erstesZeichen
+        i = i + 1
+
+    # print ("")
+    # print ("--------------------------------------")
+    # print ("End of FilmListe")
+    datei.write("\r" + "")
+    datei.write("\r--------------------------------------")
+    datei.write("\rEnd of FilmListe")
+
+# Datei schliessen
+datei.close()
